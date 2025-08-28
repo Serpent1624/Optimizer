@@ -1,0 +1,7 @@
+# Windows Optimizer Requirements
+# This script uses only Python standard library modules
+# No additional packages required for the script itself
+# PyInstaller is only needed to build the executable
+
+# For building the exe (install with: pip install -r requirements-build.txt)
+pyinstaller>=5.0.0

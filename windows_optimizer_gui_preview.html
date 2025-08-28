@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Optimizer - GUI Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .options-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4facfe;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .checkbox-container {
+            margin-right: 12px;
+            margin-top: 2px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .option-desc {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .mandatory-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            margin-left: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            border-color: #4facfe;
+            color: #4facfe;
+        }
+
+        .progress-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .status-text {
+            text-align: center;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .log-section {
+            margin-top: 20px;
+        }
+
+        .log-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .log-container {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .log-time {
+            color: #666;
+        }
+
+        .log-message {
+            color: #333;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                max-height: 300px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Windows Optimizer</h1>
+            <p>Professional System Optimization Suite</p>
+        </div>
+
+        <div class="main-content">
+            <p class="subtitle">Select the optimizations you want to perform on your Windows system:</p>
+
+            <div class="options-section">
+                <h2 class="section-title">🛡️ System Maintenance</h2>
+                <div class="options-grid" id="maintenance-options">
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="restore-point" checked disabled>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Create System Restore Point<span class="mandatory-badge">Required</span></div>
+                            <div class="option-desc">Creates a restore point before making changes (Mandatory for safety)</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="system-file-checker" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Run System File Checker</div>
+                            <div class="option-desc">Scans and repairs corrupted system files</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="dism-repair" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Run DISM Repair</div>
+                            <div class="option-desc">Repairs Windows image and component store</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-old-cleanup">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Clean Windows.old Folder</div>
+                            <div class="option-desc">Removes previous Windows installation files</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-section">
+                <h2 class="section-title">💾 Disk & Storage Optimization</h2>
+                <div class="options-grid" id="storage-options">
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="temp-cleanup" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Clean Temporary Files</div>
+                            <div class="option-desc">Removes temporary files to free up disk space</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="disk-cleanup" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Run Disk Cleanup</div>
+                            <div class="option-desc">Runs Windows built-in disk cleanup utility</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="defragment-drives" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Defragment Drives</div>
+                            <div class="option-desc">Optimizes hard drive performance by defragmenting files</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="ssd-optimization">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize SSD Settings</div>
+                            <div class="option-desc">Configures optimal settings for SSD drives</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="browser-cache" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Clear Browser Cache</div>
+                            <div class="option-desc">Clears cache for Chrome, Firefox, and Edge browsers</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="event-logs" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Clear Event Logs</div>
+                            <div class="option-desc">Removes old Windows event logs to save space</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="hibernation" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Hibernation</div>
+                            <div class="option-desc">Turns off hibernation to save disk space</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-section">
+                <h2 class="section-title">⚡ Performance Optimization</h2>
+                <div class="options-grid" id="performance-options">
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-search" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Windows Search</div>
+                            <div class="option-desc">Rebuilds search index for faster file searches</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="power-settings" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Power Settings</div>
+                            <div class="option-desc">Sets power plan to High Performance mode</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="visual-effects">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Visual Effects</div>
+                            <div class="option-desc">Disables unnecessary animations and visual effects</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="memory-management">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Memory Management</div>
+                            <div class="option-desc">Tunes virtual memory and memory settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="network-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Network Settings</div>
+                            <div class="option-desc">Tunes TCP/IP and network settings for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="game-mode">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Game Mode</div>
+                            <div class="option-desc">Enables and optimizes Game Mode for gaming performance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-section">
+                <h2 class="section-title">🔧 Advanced System Tweaks</h2>
+                <div class="options-grid" id="advanced-options">
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="registry-optimization">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Registry</div>
+                            <div class="option-desc">Performs registry cleanup and optimization</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="services">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Unnecessary Services</div>
+                            <div class="option-desc">Stops and disables non-essential Windows services</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="startup-programs">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Startup Programs</div>
+                            <div class="option-desc">Manages programs that launch at boot</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="security-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Security Settings</div>
+                            <div class="option-desc">Tunes Windows Defender and security for performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="system-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Advanced System Settings</div>
+                            <div class="option-desc">Applies advanced system optimizations and tweaks</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="context-menu">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Context Menu</div>
+                            <div class="option-desc">Cleans up right-click context menu items</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="gpu-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize GPU Settings</div>
+                            <div class="option-desc">Tunes graphics card settings for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="usb-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize USB Settings</div>
+                            <div class="option-desc">Configures USB power management and performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="printer-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Printer Settings</div>
+                            <div class="option-desc">Tunes print spooler and printer configurations</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="audio-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Audio Settings</div>
+                            <div class="option-desc">Tunes sound and audio performance settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="bluetooth-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Bluetooth Settings</div>
+                            <div class="option-desc">Configures Bluetooth power and performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="firewall-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Firewall Settings</div>
+                            <div class="option-desc">Tunes Windows Firewall for optimal performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="uac-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize UAC Settings</div>
+                            <div class="option-desc">Configures User Account Control for performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-update-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Windows Update</div>
+                            <div class="option-desc">Tunes update settings for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="error-reporting">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Error Reporting</div>
+                            <div class="option-desc">Configures Windows error reporting settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="remote-desktop">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Remote Desktop</div>
+                            <div class="option-desc">Tunes RDP settings for better remote performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="task-scheduler">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Task Scheduler</div>
+                            <div class="option-desc">Cleans up unnecessary scheduled tasks</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="font-cache">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Font Cache</div>
+                            <div class="option-desc">Clears and rebuilds system font cache</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="icon-cache">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Icon Cache</div>
+                            <div class="option-desc">Rebuilds system icon cache for faster loading</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="thumbnail-cache">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Thumbnail Cache</div>
+                            <div class="option-desc">Clears thumbnail cache for better explorer performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="prefetch-superfetch">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Prefetch/Superfetch</div>
+                            <div class="option-desc">Tunes memory prefetch settings for SSD/HDD</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="readyboost">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize ReadyBoost</div>
+                            <div class="option-desc">Configures USB caching for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-store">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Windows Store</div>
+                            <div class="option-desc">Clears Microsoft Store cache and optimizes settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="cortana">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Cortana</div>
+                            <div class="option-desc">Tunes Cortana settings and clears search data</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="onedrive">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize OneDrive</div>
+                            <div class="option-desc">Tunes OneDrive settings and clears cache</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="microsoft-edge">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Microsoft Edge</div>
+                            <div class="option-desc">Tunes Edge browser settings and clears cache</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="registry-animations">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Windows Animations</div>
+                            <div class="option-desc">Disable animations and transitions for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="explorer-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Explorer Settings</div>
+                            <div class="option-desc">Tune Windows Explorer for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-features">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Unnecessary Windows Features</div>
+                            <div class="option-desc">Disable optional Windows features to improve performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="memory-registry">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Memory Registry</div>
+                            <div class="option-desc">Tune memory management registry settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="telemetry-services">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Telemetry Services</div>
+                            <div class="option-desc">Disable Windows telemetry and data collection services</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="network-registry">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Network Registry</div>
+                            <div class="option-desc">Tune network registry settings for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-tips">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Windows Tips & Suggestions</div>
+                            <div class="option-desc">Disable Windows tips and suggestions for privacy</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="usb-registry">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize USB Registry</div>
+                            <div class="option-desc">Tune USB registry settings for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="store-autoupdates">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Store Auto-Updates</div>
+                            <div class="option-desc">Disable automatic Microsoft Store updates</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="power-registry">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Power Registry</div>
+                            <div class="option-desc">Tune power management registry settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="search-service">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Windows Search Service</div>
+                            <div class="option-desc">Disable Windows Search service for better performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="xbox-services">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Xbox Services</div>
+                            <div class="option-desc">Disable Xbox Live services if not needed</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="print-services">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Print Services</div>
+                            <div class="option-desc">Disable print spooler and fax services if not needed</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="update-medic">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Update Medic Service</div>
+                            <div class="option-desc">Disable Windows Update Medic service</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="store-install-service">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Store Install Service</div>
+                            <div class="option-desc">Disable Microsoft Store Install service</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="push-notifications">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Push Notifications</div>
+                            <div class="option-desc">Disable Windows push notification service</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="biometric-service">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Biometric Service</div>
+                            <div class="option-desc">Disable Windows biometric service if not needed</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-connect">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Disable Windows Connect Now</div>
+                            <div class="option-desc">Disable Windows Connect Now service</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="ultimate-performance">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Enable Ultimate Performance Plan</div>
+                            <div class="option-desc">Activate Ultimate Performance power plan for maximum performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="pagefile-memory">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Optimize Pagefile & Memory</div>
+                            <div class="option-desc">Tune virtual memory and pagefile settings based on RAM size</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="gpu-driver-settings">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Tune GPU Driver Settings</div>
+                            <div class="option-desc">Optimize graphics drivers for max performance and low latency</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="autoruns-bloatware">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Kill Bloatware & Background Tasks</div>
+                            <div class="option-desc">Remove unnecessary startup programs and background processes</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="network-stack">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Fine-tune Network Stack</div>
+                            <div class="option-desc">Disable Nagle algorithm and optimize NIC settings for low latency</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="dwm-effects">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Kill Eye-candy & DWM Effects</div>
+                            <div class="option-desc">Disable visual effects and DWM for maximum performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="ssd-clean">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Keep SSD Clean (TRIM)</div>
+                            <div class="option-desc">Enable TRIM and disable unnecessary indexing for SSD health</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="dns-cache" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Clear DNS Cache</div>
+                            <div class="option-desc">Flushes DNS resolver cache for better network performance</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="windows-update-cache" checked>
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Clear Windows Update Cache</div>
+                            <div class="option-desc">Removes cached Windows update files</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-section">
+                <h2 class="section-title">🛡️ Virus Checker</h2>
+                <div class="options-grid" id="virus-checker-options">
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="malwarebytes-check">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Check Malwarebytes Installation</div>
+                            <div class="option-desc">Check if Malwarebytes is installed and offer interactive installation if not found</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="malwarebytes-scan">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Run Malwarebytes Scan</div>
+                            <div class="option-desc">Attempt to run Malwarebytes scan if installed (will prompt for installation if needed)</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="malwarebytes-guide">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Interactive Malwarebytes Installation</div>
+                            <div class="option-desc">Guided installation process with step-by-step user prompts and verification</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="defender-scan">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Windows Defender Full Scan</div>
+                            <div class="option-desc">Run a full system scan with Windows Defender</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="security-check">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Comprehensive Security Check</div>
+                            <div class="option-desc">Run security checks and provide recommendations</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="options-section">
+                <h2 class="section-title">🔄 Windows Updates</h2>
+                <div class="options-grid" id="windows-updates-options">
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="updates-default">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Windows Updates - Default</div>
+                            <div class="option-desc">Reset Windows Update settings to stock/default settings</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="updates-recommended">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Windows Updates - Recommended</div>
+                            <div class="option-desc">Security-only updates; defer feature updates ~24 months</div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox" id="updates-disable">
+                        </div>
+                        <div class="option-content">
+                            <div class="option-name">Windows Updates - Disable All</div>
+                            <div class="option-desc">Disable all updates (not recommended; for legacy/isolated systems)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" onclick="selectAll()">Select All</button>
+                <button class="btn btn-secondary" onclick="deselectAll()">Deselect All</button>
+                <button class="btn btn-primary" onclick="startOptimization()">Apply Optimizations</button>
+            </div>
+
+            <div class="progress-section" id="progress-section">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="status-text" id="status-text">Ready to start...</div>
+                </div>
+
+                <div class="log-section">
+                    <div class="log-title">Optimization Log:</div>
+                    <div class="log-container" id="log-container">
+                        <div class="log-entry">
+                            <span class="log-time">[INFO]</span>
+                            <span class="log-message">Windows Optimizer GUI Preview loaded successfully</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-time">[INFO]</span>
+                            <span class="log-message">Ready to apply selected optimizations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="selected-count">15</div>
+                    <div class="stat-label">Selected</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-count">79</div>
+                    <div class="stat-label">Total Options</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">~150</div>
+                    <div class="stat-label">Minutes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update selected count
+        function updateSelectedCount() {
+            const checkboxes = document.querySelectorAll('.checkbox:not([disabled])');
+            const checked = document.querySelectorAll('.checkbox:not([disabled]):checked');
+            document.getElementById('selected-count').textContent = checked.length;
+        }
+
+        // Select all non-disabled checkboxes
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('.checkbox:not([disabled])');
+            checkboxes.forEach(cb => cb.checked = true);
+            updateSelectedCount();
+        }
+
+        // Deselect all non-disabled checkboxes
+        function deselectAll() {
+            const checkboxes = document.querySelectorAll('.checkbox:not([disabled])');
+            checkboxes.forEach(cb => cb.checked = false);
+            updateSelectedCount();
+        }
+
+        // Add event listeners to checkboxes
+        document.querySelectorAll('.checkbox').forEach(cb => {
+            cb.addEventListener('change', updateSelectedCount);
+        });
+
+        // Simulate optimization process
+        function startOptimization() {
+            const progressSection = document.getElementById('progress-section');
+            const progressFill = document.getElementById('progress-fill');
+            const statusText = document.getElementById('status-text');
+            const logContainer = document.getElementById('log-container');
+
+            progressSection.style.display = 'block';
+
+            const optimizations = [
+                'Creating System Restore Point',
+                'Cleaning Temporary Files',
+                'Running Disk Cleanup',
+                'Defragmenting Drives',
+                'Clearing Windows Update Cache',
+                'Running System File Checker',
+                'Running DISM Repair',
+                'Clearing DNS Cache',
+                'Optimizing Windows Search',
+                'Clearing Browser Cache',
+                'Clearing Event Logs',
+                'Optimizing Power Settings',
+                'Disabling Hibernation',
+                'Optimizing Registry',
+                'Disabling Unnecessary Services',
+                'Optimizing Startup Programs',
+                'Optimizing Network Settings',
+                'Optimizing Memory Management',
+                'Optimizing Visual Effects',
+                'Optimizing SSD Settings',
+                'Optimizing Security Settings',
+                'Applying Advanced System Settings',
+                'Cleaning Windows.old Folder',
+                'Optimizing Game Mode',
+                'Optimizing Context Menu',
+                'Optimizing GPU Settings',
+                'Optimizing USB Settings',
+                'Optimizing Printer Settings',
+                'Optimizing Audio Settings',
+                'Optimizing Bluetooth Settings',
+                'Optimizing Firewall Settings',
+                'Optimizing UAC Settings',
+                'Optimizing Windows Update Settings',
+                'Optimizing Error Reporting',
+                'Optimizing Remote Desktop',
+                'Optimizing Task Scheduler',
+                'Optimizing Font Cache',
+                'Optimizing Icon Cache',
+                'Optimizing Thumbnail Cache',
+                'Optimizing Prefetch/Superfetch',
+                'Optimizing ReadyBoost',
+                'Optimizing Windows Store',
+                'Optimizing Cortana',
+                'Optimizing OneDrive',
+                'Optimizing Microsoft Edge',
+                'Disabling Windows Animations',
+                'Optimizing Explorer Settings',
+                'Disabling Unnecessary Windows Features',
+                'Optimizing Memory Registry',
+                'Disabling Telemetry Services',
+                'Optimizing Network Registry',
+                'Disabling Windows Tips & Suggestions',
+                'Optimizing USB Registry',
+                'Disabling Store Auto-Updates',
+                'Optimizing Power Registry',
+                'Disabling Windows Search Service',
+                'Disabling Xbox Services',
+                'Disabling Print Services',
+                'Disabling Update Medic Service',
+                'Disabling Store Install Service',
+                'Disabling Push Notifications',
+                'Disabling Biometric Service',
+                'Disabling Windows Connect Now',
+                'Checking Malwarebytes Installation',
+                'Running Malwarebytes Scan',
+                'Providing Malwarebytes Installation Guide',
+                'Running Windows Defender Full Scan',
+                'Running Comprehensive Security Check'
+            ];
+
+            let currentStep = 0;
+            const totalSteps = optimizations.length;
+
+            function processNext() {
+                if (currentStep >= totalSteps) {
+                    statusText.textContent = 'Optimization completed successfully!';
+                    progressFill.style.width = '100%';
+
+                    const completionEntry = document.createElement('div');
+                    completionEntry.className = 'log-entry';
+                    completionEntry.innerHTML = `
+                        <span class="log-time">[SUCCESS]</span>
+                        <span class="log-message">All selected optimizations completed! It is recommended to restart your computer.</span>
+                    `;
+                    logContainer.appendChild(completionEntry);
+                    logContainer.scrollTop = logContainer.scrollHeight;
+                    return;
+                }
+
+                const optimization = optimizations[currentStep];
+                const progress = ((currentStep + 1) / totalSteps) * 100;
+
+                statusText.textContent = `Running: ${optimization}`;
+                progressFill.style.width = `${progress}%`;
+
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <span class="log-time">[${new Date().toLocaleTimeString()}]</span>
+                    <span class="log-message">${optimization}...</span>
+                `;
+                logContainer.appendChild(logEntry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+
+                currentStep++;
+
+                // Simulate processing time (random between 1-3 seconds)
+                const delay = Math.random() * 2000 + 1000;
+                setTimeout(processNext, delay);
+            }
+
+            // Start the process
+            processNext();
+        }
+
+        // Initialize
+        updateSelectedCount();
+    </script>
+</body>
+</html>
