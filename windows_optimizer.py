@@ -681,6 +681,135 @@ class WindowsOptimizerGUI:
 
     self.progress_frame.columnconfigure(0, weight=1)
     self.progress_frame.rowconfigure(3, weight=1)
+    # Buttons frame
+    buttons_frame = ttk.Frame(main_frame)
+    buttons_frame.grid(row=3, column=0, pady=(20, 0))
+
+    # Select All / Deselect All buttons
+    select_all_btn = ttk.Button(buttons_frame, text="Select All",
+                   command=self.select_all)
+    select_all_btn.grid(row=0, column=0, padx=(0, 10))
+
+    deselect_all_btn = ttk.Button(buttons_frame, text="Deselect All",
+                     command=self.deselect_all)
+    deselect_all_btn.grid(row=0, column=1, padx=(0, 20))
+
+    # Apply button
+    self.apply_btn = ttk.Button(buttons_frame, text="Apply Optimizations",
+                   command=self.start_optimization)
+    self.apply_btn.grid(row=0, column=2)
+
+    # Progress frame (initially hidden)
+    self.progress_frame = ttk.Frame(main_frame)
+
+    # Progress bar
+    self.progress_var = tk.DoubleVar()
+    self.progress_bar = ttk.Progressbar(self.progress_frame, variable=self.progress_var,
+                       maximum=100, mode='determinate')
+    self.progress_bar.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+
+    # Status label
+    self.status_label = ttk.Label(self.progress_frame, text="Ready to start...",
+                     font=("Arial", 9))
+    self.status_label.grid(row=1, column=0, pady=(0, 10))
+
+    # Log text area
+    log_label = ttk.Label(self.progress_frame, text="Optimization Log:",
+                 font=("Arial", 9, "bold"))
+    log_label.grid(row=2, column=0, sticky=tk.W, pady=(0, 5))
+
+    self.log_text = scrolledtext.ScrolledText(self.progress_frame, height=8,
+                         font=("Consolas", 8))
+    self.log_text.grid(row=3, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+    self.progress_frame.columnconfigure(0, weight=1)
+    self.progress_frame.rowconfigure(3, weight=1)
+    # Buttons frame
+    buttons_frame = ttk.Frame(main_frame)
+    buttons_frame.grid(row=3, column=0, pady=(20, 0))
+
+    # Select All / Deselect All buttons
+    select_all_btn = ttk.Button(buttons_frame, text="Select All",
+                   command=self.select_all)
+    select_all_btn.grid(row=0, column=0, padx=(0, 10))
+
+    deselect_all_btn = ttk.Button(buttons_frame, text="Deselect All",
+                     command=self.deselect_all)
+    deselect_all_btn.grid(row=0, column=1, padx=(0, 20))
+
+    # Apply button
+    self.apply_btn = ttk.Button(buttons_frame, text="Apply Optimizations",
+                   command=self.start_optimization)
+    self.apply_btn.grid(row=0, column=2)
+
+    # Progress frame (initially hidden)
+    self.progress_frame = ttk.Frame(main_frame)
+
+    # Progress bar
+    self.progress_var = tk.DoubleVar()
+    self.progress_bar = ttk.Progressbar(self.progress_frame, variable=self.progress_var,
+                       maximum=100, mode='determinate')
+    self.progress_bar.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+
+    # Status label
+    self.status_label = ttk.Label(self.progress_frame, text="Ready to start...",
+                     font=("Arial", 9))
+    self.status_label.grid(row=1, column=0, pady=(0, 10))
+
+    # Log text area
+    log_label = ttk.Label(self.progress_frame, text="Optimization Log:",
+                 font=("Arial", 9, "bold"))
+    log_label.grid(row=2, column=0, sticky=tk.W, pady=(0, 5))
+
+    self.log_text = scrolledtext.ScrolledText(self.progress_frame, height=8,
+                         font=("Consolas", 8))
+    self.log_text.grid(row=3, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+    self.progress_frame.columnconfigure(0, weight=1)
+    self.progress_frame.rowconfigure(3, weight=1)
+    # Buttons frame
+    buttons_frame = ttk.Frame(main_frame)
+    buttons_frame.grid(row=3, column=0, pady=(20, 0))
+
+    # Select All / Deselect All buttons
+    select_all_btn = ttk.Button(buttons_frame, text="Select All",
+                   command=self.select_all)
+    select_all_btn.grid(row=0, column=0, padx=(0, 10))
+
+    deselect_all_btn = ttk.Button(buttons_frame, text="Deselect All",
+                     command=self.deselect_all)
+    deselect_all_btn.grid(row=0, column=1, padx=(0, 20))
+
+    # Apply button
+    self.apply_btn = ttk.Button(buttons_frame, text="Apply Optimizations",
+                   command=self.start_optimization)
+    self.apply_btn.grid(row=0, column=2)
+
+    # Progress frame (initially hidden)
+    self.progress_frame = ttk.Frame(main_frame)
+
+    # Progress bar
+    self.progress_var = tk.DoubleVar()
+    self.progress_bar = ttk.Progressbar(self.progress_frame, variable=self.progress_var,
+                       maximum=100, mode='determinate')
+    self.progress_bar.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+
+    # Status label
+    self.status_label = ttk.Label(self.progress_frame, text="Ready to start...",
+                     font=("Arial", 9))
+    self.status_label.grid(row=1, column=0, pady=(0, 10))
+
+    # Log text area
+    log_label = ttk.Label(self.progress_frame, text="Optimization Log:",
+                 font=("Arial", 9, "bold"))
+    log_label.grid(row=2, column=0, sticky=tk.W, pady=(0, 5))
+
+    self.log_text = scrolledtext.ScrolledText(self.progress_frame, height=8,
+                         font=("Consolas", 8))
+    self.log_text.grid(row=3, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+    self.progress_frame.columnconfigure(0, weight=1)
+    self.progress_frame.rowconfigure(3, weight=1)
 
     def create_optimization_section(self, parent, section_title, option_keys):
         """Create a section of optimization options with a header."""
