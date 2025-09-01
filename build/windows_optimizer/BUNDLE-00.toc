@@ -1,0 +1,3 @@
+([('windows_optimizer',
+   '/Users/karanveer/Desktop/vs code/idk man/dist/windows_optimizer',
+   'EXECUTABLE')],)
